@@ -1,5 +1,5 @@
 name: 'Terraform'
-
+# bei push wird der workflow automatisch gestartet
 on:
   push:
     branches:

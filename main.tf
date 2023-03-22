@@ -8,6 +8,9 @@ resource "azurerm_virtual_network" "example" {
   address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.example.location
   resource_group_name = azurerm_resource_group.example.name
+  depends_on = [
+    azurerm_resource_group.example
+  ]
 }
 
 resource "azurerm_subnet" "example" {
@@ -15,6 +18,9 @@ resource "azurerm_subnet" "example" {
   resource_group_name  = azurerm_resource_group.example.name
   virtual_network_name = azurerm_virtual_network.example.name
   address_prefixes     = ["10.0.2.0/24"]
+  depends_on = [
+    azurerm_virtual_network.example
+  ]
 }
 
 resource "azurerm_network_interface" "example" {
@@ -42,6 +48,10 @@ resource "azurerm_public_ip" "example" {
   tags = {
     environment = "Production"
   }
+
+  depends_on = [
+    azurerm_resource_group.example
+  ]
 }
 
 resource "azurerm_linux_virtual_machine" "example" {
@@ -70,4 +80,9 @@ resource "azurerm_linux_virtual_machine" "example" {
     sku       = "20_04-lts-gen2"
     version   = "latest"
   }
+
+  depends_on = [
+    azurerm_resource_group.example,
+    azurerm_network_interface.example
+  ]
 }
